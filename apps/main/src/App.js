@@ -13,12 +13,8 @@ export const App = () =>
     <Router history={history}>
         <Header />
         <Switch>
-            <Route path={ROUTES.news} exact component={NewsListPage}>
-                <NewsListPage />
-            </Route>
-            <Route path={ROUTES.about}>
-                <AboutPage />
-            </Route>
+            <Route path={ROUTES.news} exact component={NewsListPage} />
+            <Route path={ROUTES.about} component={AboutPage} />
             <Redirect to={ROUTES.news} />
         </Switch>
     </Router>

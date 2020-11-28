@@ -1,0 +1,8 @@
+a {
+    color: red;
+    font-size: 26px;
+}
+
+.app2 a {
+    color: green;
+}

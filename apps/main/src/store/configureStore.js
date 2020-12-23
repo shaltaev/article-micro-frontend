@@ -1,19 +1,31 @@
-import { configureStore as createStore, getDefaultMiddleware } from '@reduxjs/toolkit';
+import { combineReducers, createStore, compose } from '@reduxjs/toolkit';
 
-import { rootReducer } from './root_reducer';
+/**
+ * Cf. redux docs:
+ * https://redux.js.org/recipes/code-splitting/#defining-an-injectreducer-function
+ */
+export function configureStore() {
+  const composeEnhancers =
+    typeof window === 'object' && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
+      ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({})
+      : compose;
 
-const defaultMiddlewareOptions = {
-    serializableCheck: {
-        ignoredActionPaths: ['meta.onSuccess', 'meta.onFailure'],
-    },
-};
+  const enhancer = composeEnhancers();
+  const store = createStore(createReducer(), enhancer);
 
-const middleware = [...getDefaultMiddleware(defaultMiddlewareOptions)];
+  store.asyncReducers = {};
 
-export const store = createStore({
-    reducer: rootReducer,
-    middleware,
-    devTools: true,
-});
+  store.injectReducer = (key, asyncReducer) => {
+    store.asyncReducers[key] = asyncReducer;
+    store.replaceReducer(createReducer(store.asyncReducers));
+  };
 
+  return store;
+}
+
+function createReducer(asyncReducers) {
+  return combineReducers({
+    ...asyncReducers,
+  });
+}
 

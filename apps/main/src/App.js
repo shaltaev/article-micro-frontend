@@ -1,21 +1,21 @@
-import React from 'react';
-import { Provider } from 'react-redux';
-import { Router, Switch, Route, Redirect } from 'react-router-dom';
+import React, { Suspense, lazy } from 'react';
+import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom';
 
-import { history } from "./history";
 import { Header } from './components';
-import { NewsListPage, AboutPage } from "./pages";
-import { store } from './store/configureStore';
+import { AboutPage } from "./pages";
 import { ROUTES } from './constants';
 
+const NewsAppPageLazy = lazy(() => import('app2/NewsApp'));
+
+const NewsAppPage = () => <Suspense fallback={null}><NewsAppPageLazy /></Suspense>
+
 export const App = () =>
-  <Provider store={store}>
-    <Router history={history}>
+    <BrowserRouter>
         <Header />
         <Switch>
-            <Route path={ROUTES.news} exact component={NewsListPage} />
+            <Route path={ROUTES.news} exact component={NewsAppPage} />
             <Route path={ROUTES.about} component={AboutPage} />
             <Redirect to={ROUTES.news} />
         </Switch>
-    </Router>
-  </Provider>
+    </BrowserRouter>
+

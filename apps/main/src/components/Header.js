@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
+
 import { ROUTES } from '../constants';
 
 export const Header = () => {
   const [title, setTitle] = useState('');
 
   const handleRouteEvent = (ev) => {
-    console.log(ev);
     setTitle(ev.detail || '')
   }
 
@@ -20,8 +21,8 @@ export const Header = () => {
   return (<div>
     <h1>{title.length > 0 ? `Route ${title}`: 'No title'}</h1>
     <nav>
-      <a href={ROUTES.news}>News</a>{' '}
-      <a href={ROUTES.about}>About</a>
+      <Link to={ROUTES.news}>News</Link>{' '}
+      <Link to={ROUTES.about}>About</Link>
     </nav>
   </div>)
 }

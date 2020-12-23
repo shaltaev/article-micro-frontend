@@ -1,0 +1,1 @@
+export { makeRouteEvent } from './makeRouteEvent';
